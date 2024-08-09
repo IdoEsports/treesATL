@@ -15,5 +15,8 @@
     },
     "prettier": {
         "tabWidth": 4
+    },
+    "dependencies": {
+        "mapbox-gl": "^3.5.2"
     }
 }

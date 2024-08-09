@@ -3,10 +3,15 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css"
+			rel="stylesheet"
+		/>
+		<link href="./output.css" rel="stylesheet" />
 		<title>Trees ATL Map</title>
 	</head>
-	<body>
-		<div id="app"></div>
+	<body class="m-0 p-0">
+		<div id="map" class="absolute top-0 bottom-0 w-full"></div>
 		<script type="module" src="/src/main.js"></script>
 	</body>
 </html>
