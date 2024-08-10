@@ -5,5 +5,17 @@ const map = new mapboxgl.Map({
 	container: "map", // container ID
 	style: "mapbox://styles/mapbox/streets-v12", // style URL
 	center: [-84.39, 33.75], // starting position [lng, lat]
-	zoom: 9, // starting zoom
+	zoom: 10, // starting zoom
+});
+
+map.on("load", () => {
+	map.addLayer({
+		id: "terrain-data",
+		type: "line",
+		source: {
+			type: "vector",
+			url: "mapbox://mapbox.mapbox-terrain-v2",
+		},
+		"source-layer": "contour",
+	});
 });
