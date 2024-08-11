@@ -18,6 +18,7 @@ def get_feature_urls(har_file):
                     "outSR=102100",
                     "outSR=4326"))  # PBF -> GeoJSON and Web Mercator -> WGS 84
 
+    print(f"Unique URLs: {len(unique_urls)}")
     return list(unique_urls)
 
 
@@ -28,7 +29,7 @@ def download_geojson_files(urls, output_dir):
     for i, url in enumerate(urls):
         try:
             response = requests.get(url)
-            # response.raise_for_status()
+            response.raise_for_status()
 
             decoded_url = urllib.parse.unquote(url)
             pattern = r'geometry=\{"xmin":(\-[0-9]+\.[0-9]+),"ymin":([0-9]+\.[0-9]+),"xmax":(\-[0-9]+\.[0-9]+),"ymax":([0-9]+\.[0-9]+),'
@@ -44,12 +45,14 @@ def download_geojson_files(urls, output_dir):
             with open(filepath, 'w') as f:
                 f.write(response.text)
 
+            print(f"Created {filepath}")
+
         except requests.exceptions.RequestException as e:
             print(f"Error downloading {url}: {e}")
 
 
-har_file = "scripts/taatl.maps.arcgis.com.har"
+har_file = "scripts/all.har"
 urls = get_feature_urls(har_file)
 
-output_dir = "public"
+output_dir = "allTrees"
 download_geojson_files(urls, output_dir)

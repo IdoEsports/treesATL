@@ -14,7 +14,7 @@ map.on("load", () => {
 		type: "circle",
 		source: {
 			type: "geojson",
-			data: "public/region_(-9387690.065885972, -9382798.096075729)_(3996739.334996203, 4001631.3048064467).geojson",
+			data: "assets/cleanAtlTrees.geojson",
 		},
 	});
 });
