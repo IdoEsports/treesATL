@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "layers": {
+        "Atlanta_Trees": {
+            "source": "mapbox://tileset-source/aesbetic/Atlanta_Trees",
+            "minzoom": 9,
+            "maxzoom": 16
+        }
+    }
+}
