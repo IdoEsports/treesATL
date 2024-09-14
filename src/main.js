@@ -9,24 +9,42 @@ const map = new mapboxgl.Map({
 	pitch: 55,
 });
 
-/*
-	TODO: Add popups
-*/
+// cleanAtlTrees
+map.on("load", () => {
+	const styleJSON = map.getStyle();
+	const mapLayer = styleJSON.layers[0];
 
-// map.on("load", () => {
-// 	map.addSource("atlTrees", {
-// 		type: "vector",
-// 		url: "mapbox://aesbetic.Atlanta_Trees",
-// 	});
-//
-// 	map.addLayer({
-// 		id: "trees",
-// 		type: "circle",
-// 		source: "atlTrees",
-// 		"source-layer": "Atlanta_Trees",
-// 	});
-//
-// 	map.on("style.load", () => {
-// 		map.setConfigProperty("basemap", "show3dObjects", true);
-// 	});
-// });
+	const popup = new mapboxgl.Popup({
+		closeButton: false,
+		closeOnClick: false,
+		className: "max-w-400px",
+	});
+
+	map.on("mouseenter", mapLayer.id, (e) => {
+		map.getCanvas().style.cursor = "pointer";
+
+		const coordinates = e.features[0].geometry.coordinates.slice();
+		const properties = e.features[0].properties;
+
+		// Ensure that if the map is zoomed out such that multiple
+		// copies of the feature are visible, the popup appears
+		// over the copy being pointed to. (I'm not too sure)
+		if (
+			["mercator", "equirectangular"].includes(map.getProjection().name)
+		) {
+			while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+				coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+			}
+		}
+
+		popup
+			.setLngLat(coordinates)
+			.setHTML(properties.Neighborhood)
+			.addTo(map);
+	});
+
+	map.on("mouseleave", mapLayer.id, () => {
+		map.getCanvas().style.cursor = "";
+		popup.remove();
+	});
+});
