@@ -9,7 +9,6 @@ const map = new mapboxgl.Map({
 	pitch: 55,
 });
 
-// cleanAtlTrees
 map.on("load", () => {
 	const styleJSON = map.getStyle();
 	const mapLayer = styleJSON.layers[0];
