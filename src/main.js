@@ -9,10 +9,12 @@ const map = new mapboxgl.Map({
 	pitch: 55,
 });
 
-map.on("load", () => {
-	const styleJSON = map.getStyle();
-	const mapLayer = styleJSON.layers[0];
+function filterBy(year, mapLayer) {
+	const filters = ["<=", ["get", "YearPlanted"], year];
+	map.setFilter(mapLayer.id, filters);
+}
 
+function setupPopupHandlers(mapLayer) {
 	const popup = new mapboxgl.Popup({
 		closeButton: false,
 		closeOnClick: false,
@@ -96,4 +98,13 @@ map.on("load", () => {
 		map.getCanvas().style.cursor = "";
 		popup.remove();
 	});
+}
+
+map.on("load", () => {
+	const styleJSON = map.getStyle();
+	const mapLayer = styleJSON.layers[0];
+
+	setupPopupHandlers(mapLayer);
+
+	filterBy(2010, mapLayer);
 });
