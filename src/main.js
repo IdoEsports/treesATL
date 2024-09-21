@@ -5,10 +5,11 @@ const map = new mapboxgl.Map({
 	container: "map", // container ID
 	style: "mapbox://styles/aesbetic/cm12n0hob004s01pdf4omgtzp",
 	center: [-84.39, 33.75], // starting position [lng, lat]
-	zoom: 11.8, // starting zoom
+	zoom: 12, // starting zoom
 	pitch: 55,
 });
 
+// TODO: When data is sparse, clusters won't form due to radius being set too low.
 function filterBy(year, mapLayer) {
 	const filters = ["<=", ["get", "YearPlanted"], year];
 	map.setFilter(mapLayer.id, filters);
@@ -106,5 +107,10 @@ map.on("load", () => {
 
 	setupPopupHandlers(mapLayer);
 
-	filterBy(2010, mapLayer);
+	document.getElementById("slider").addEventListener("input", (e) => {
+		const year = parseInt(e.target.value, 10);
+
+		document.getElementById("year").textContent = year;
+		filterBy(year, mapLayer);
+	});
 });

@@ -16,6 +16,26 @@
 	<body class="m-0 p-0">
 		<div id="map" class="absolute top-0 bottom-0 w-full"></div>
 
+		<div class="map-overlay top">
+			<div class="map-overlay-inner">
+				<h2>Trees Planted from 1990 to 2024</h2>
+				<label id="year">2024</label>
+				<input
+					id="slider"
+					type="range"
+					min="1990"
+					max="2024"
+					step="1"
+					value="2024"
+				/>
+			</div>
+			<div class="map-overlay-inner">
+				<div id="legend" class="legend">
+					<div class="bar"></div>
+					<div>Alive Percentage (%)</div>
+				</div>
+			</div>
+		</div>
 		<script type="module" src="/src/main.js"></script>
 	</body>
 </html>
