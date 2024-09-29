@@ -1,4 +1,5 @@
 import mapboxgl from "mapbox-gl";
+import { MapboxSearchBox } from "@mapbox/search-js-web";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const map = new mapboxgl.Map({
@@ -19,7 +20,8 @@ function setupPopupHandlers(mapLayer) {
 	const popup = new mapboxgl.Popup({
 		closeButton: false,
 		closeOnClick: false,
-		className: "max-w-400px",
+		color: "#232136",
+		className: "max-w-400px text-moon-fg",
 	});
 
 	map.on("mouseenter", mapLayer.id, (e) => {
@@ -65,10 +67,11 @@ function setupPopupHandlers(mapLayer) {
 				e.features[0].properties.Neighborhood = neighborhood;
 			}
 
-			popup.setHTML(neighborhood);
+			popup.setHTML(
+				`<p class="m-0">${neighborhood}</p><p class="m-0">(${properties.point_count} trees)</p>`,
+			);
 		} else {
 			// Unclustered Popup Text
-			// console.log(JSON.stringify(properties));
 			const formattedProperties = {
 				Species: properties.Species,
 				"Planted Date": new Date(
@@ -79,7 +82,7 @@ function setupPopupHandlers(mapLayer) {
 				Neighborhood: properties.Neighborhood,
 			};
 
-			popup.setHTML(`<ul class="property-list rounded-md bg-white p-4 shadow-md">
+			popup.setHTML(`<ul class="property-list rounded-md p-4 shadow-md">
 				${Object.entries(formattedProperties)
 					.map(
 						([key, value]) => `
@@ -114,3 +117,32 @@ map.on("load", () => {
 		filterBy(year, mapLayer);
 	});
 });
+
+// Search Box
+const searchBoxElement = new MapboxSearchBox();
+
+searchBoxElement.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+
+searchBoxElement.options = {
+	types: "address,poi",
+	proximity: [-84.39, 33.75],
+};
+
+searchBoxElement.marker = true;
+searchBoxElement.mapboxgl = mapboxgl;
+
+searchBoxElement.theme = {
+	variables: {
+		colorBackground: "#232136",
+		colorPrimary: "#232136",
+		colorBackgroundHover: "#2a273f",
+		colorSecondary: "#2a273f",
+		colorText: "#e0def4",
+	},
+	cssText: "input { color: #e0def4 !important; border: thin !important; }",
+};
+
+searchBoxElement.marker = {
+	color: "#232136",
+};
+map.addControl(searchBoxElement);
